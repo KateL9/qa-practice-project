@@ -2,22 +2,21 @@ import { test, expect, Locator } from '@playwright/test';
 
 test.describe('if-else tests', () => {
     async function isOdd(number: number): Promise<boolean> {
-        // if (typeof number != 'number' || isNaN(number)) {
         if (number === undefined || number === null || isNaN(Number(number))) {
             throw Error('Please enter a valid number')
         } else {
-            //Return true for odd numbers, false for even numbers
+        //Return true for odd numbers, false for even numbers
             return number % 2 != 0
         }
     }
 
-    test('returns false for even numbers', async ({}) => {
+    test('returns true for odd numbers', async ({}) => {
         expect(await isOdd(7)).toBeTruthy();
         expect(await isOdd(1)).toBeTruthy();
         expect(await isOdd(-3)).toBeTruthy();
         expect(await isOdd(1000001)).toBeTruthy();
     })
-    test('returns true for even numbers', async ({}) => {
+    test('returns false for even numbers', async ({}) => {
         expect(await isOdd(10)).toBeFalsy();
         expect(await isOdd(2)).toBeFalsy();
         expect(await isOdd(-10)).toBeFalsy();
