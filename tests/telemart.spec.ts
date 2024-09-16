@@ -1,13 +1,5 @@
 import { test, expect, Locator } from '@playwright/test';
 
-
-/* - перейти на https://telemart.ua/ua/
- - перевірити що в каруселі знаходиться більше 2х елементів (використовуйте locator().all() і length) 
- - натиснути 2 рази на scroll каруселі 
- - клікнути на контект каруселі 
- - перевірити що навігація успішна  (подумайте як) 
-  */
-
 test('Check carousel slider has 2 elements', async ({ page }) => {
     await page.goto('https://telemart.ua/ua/');
     let buttonNext: Locator = page.locator('div.categories-slider div.swiper-button-next');
@@ -37,6 +29,7 @@ test('Check carousel slider has 2 elements', async ({ page }) => {
     expect(initialBannerIds.slideNext).toEqual(currentBannerIds.slideActive);
 
     // Navigate to banner link and check the link is correct
+ 
     let sliderUrl: string | null = await slideActive.getAttribute('href');
     await slideActive.click();
     let currentUrl: string = page.url();
