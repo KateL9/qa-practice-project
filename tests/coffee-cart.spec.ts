@@ -26,7 +26,6 @@ test.describe('Test coffee cart site', () => {
         let deleteButton: Locator = page.locator('button.delete');
         await deleteButton.click();
         await expect(page.locator('.list p')).toContainText('No coffee, go add some.');
-    
     });
     
     test('Add multiple items to the cart', async ({ page }) => {
@@ -58,8 +57,16 @@ test.describe('Test coffee cart site', () => {
         let nameField: Locator = page.locator('input#name');
         let emailField: Locator = page.locator('input#email');
         let submitButton: Locator = page.locator('#submit-payment');
-        await nameField.fill('Test');
-        await emailField.fill('test-email@test.com');
+        // function:
+        async function fillInput(element: Locator, input: string) {
+            await element.fill(input);
+        };
+        await fillInput(nameField, 'Test');
+        await fillInput(emailField, 'test-email@test.com');
+
+        // await nameField.fill('Test');
+        // await emailField.fill('test-email@test.com');
+        
         await submitButton.click();
         await expect(page.locator('.snackbar.success')).toBeVisible();
         await expect(page.locator('.snackbar.success')).toContainText('Thanks for your purchase. Please check your email for payment.');

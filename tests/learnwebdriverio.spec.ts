@@ -1,23 +1,30 @@
 import { test, expect, Locator } from '@playwright/test';
+import SignUpPage from '../pages/SignUpPage';
+import HomePage from '../pages/HomePage';
+import LoginPage from '../pages/LoginPage';
 
-test('sing up user - user is registered', async ({ page }) => {
-  await page.goto('https://demo.learnwebdriverio.com/register');
-  let usernameField: Locator = page.locator('//input[@placeholder="Username"]');
-  let emailField: Locator = page.locator('//input[@placeholder="Email"]');
-  let passwordField: Locator = page.locator('//input[@placeholder="Password"]');
-  let signUpButton: Locator = page.locator('//button[contains(text(), "Sign up")]');
+test('Sign up from Home page', async ({ page }) => {
+  let homePage = new HomePage(page);
+  await homePage.navigateTo('/');
+  await homePage.clickSignUpButton();
   
+  let signUpPage = new SignUpPage(page);
   let random: number = Math.floor(Math.random() * 1000);
-  let username: string = "testuser" + random;
-  let usernameSign: Locator = page.locator(`//a[contains(text(), 'testuser${random}')]`);
+  let username = `testuser${random}`;
+  await signUpPage.signUp(username, `@${username}@gmail.com`, 'Password1!');
+  await expect(homePage.newArticleButton).toBeVisible();
+});
+
+test('Login from Home page', async ({ page }) => {
+  let homePage = new HomePage(page);
+  await homePage.navigateTo('/');
+  await homePage.clickLoginButton();
   
-  await usernameField.fill(username);
-  await emailField.fill(`@${username}@gmail.com`);
-
-  await passwordField.fill('Password1!');
-  await signUpButton.click();
-
-  await expect(usernameSign).toBeVisible();
+  let loginPage = new LoginPage(page);
+  let email = 'test@gmail.com';
+  let password = 'Password1!';
+  await loginPage.loginIn(email, password);
+  await expect(homePage.newArticleButton).toBeVisible();
 });
 
 test('login, create an article, the article is created', async ({page}) => {
